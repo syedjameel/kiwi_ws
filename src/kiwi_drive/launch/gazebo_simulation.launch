@@ -7,7 +7,7 @@
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_config_file)"/>
 
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" default="$(find kiwi_drive)/worlds/simple_arena.world"/>
+        <!-- <arg name="world_name" default="$(find kiwi_drive)/worlds/simple_arena.world"/> -->
         <arg name="paused" default="false"/>
         <arg name="use_sim_time" default="true"/>
         <arg name="gui" default="true"/>
