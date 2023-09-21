@@ -1,0 +1,7 @@
+/.vscode
+/__pycache__
+/build
+/devel
+/.git
+.catkin_workspace
+
