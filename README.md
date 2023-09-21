@@ -28,15 +28,15 @@
 #### 2. run simulation with teleop keyboard
     *Run all of the following in seperate sourced terminals*
 
-    ```shell
-        roslaunch kiwi_drive gazebo_simulation.launch
-        rosrun kiwi_path kiwi_odom_path_node
-        rosrun teleop_keyboard_omni3 teleop_keyboard_omni3.py
-    ```
+   ```shell
+    roslaunch kiwi_drive gazebo_simulation.launch
+    rosrun kiwi_path kiwi_odom_path_node
+    rosrun teleop_keyboard_omni3 teleop_keyboard_omni3.py
+  ```
 
 #### 3. run controls with pid control and move to pose function
     *Run all of the following in seperate sourced terminals*
 
-    ```shell
-        roslaunch kiwi_control kiwi_tune_pid.launch
-    ```
+   ```shell
+    roslaunch kiwi_control kiwi_tune_pid.launch
+  ```
