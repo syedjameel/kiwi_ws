@@ -1,0 +1,287 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_name">
+
+    <material name="black">
+        <color rgba="0 0 0 1.0"/>
+    </material>
+
+    <material name="red">
+        <color rgba="1.0 0 0 1.0"/>
+    </material>
+
+    <material name="LightGrey">
+        <color rgba="0.7 0.7 0.7 1.0"/>
+    </material>
+
+    <link name="base_footprint">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </link>
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://kiwi_drive/meshes/kiwibasev4_scaled.stl"/>
+                <!-- <cylinder radius="0.1" length="0.01"/> -->
+            </geometry>
+            <material name="red"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://kiwi_drive/meshes/kiwibasev4_scaled.stl"/>
+                <!-- <cylinder radius="0.1" length="0.01"/> -->
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1"/> <!-- 0.918828 just for simulation, the actual mass is slightly diffrent -->
+            <!-- <origin xyz="0.0 0.0 2.5e-3" rpy="0.0 0.0 0.0"/> -->
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+
+            <!-- <inertia ixx="1.838e-3" 
+                     ixy="8.725e-16" 
+                     ixz="0.0" 
+                     iyy="1.838e-3" 
+                     iyz="0.0" 
+                     izz="3.673e-3"/> -->
+                <inertia ixx="0.0025083"
+                         ixy="0.0" 
+                         ixz="0.0" 
+                         iyy="0.0025083" 
+                         iyz="0.0" 
+                         izz="5e-3"/>
+        </inertial>
+    </link>
+
+    <joint name="base_joint" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 0.014667" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <xacro:property name="pi" value="3.1415"/>
+    <xacro:property name="castor_mass" value="0.014933" />
+    <xacro:property name="wheel_mass" value="0.5" />
+
+    <xacro:macro name="castor" params="parent_name name x y z r p yaw">
+        <link name="${name}_link">
+            <visual>
+                <geometry>
+                    <mesh filename="package://kiwi_drive/meshes/omniwheelcastororigin_scaled.stl"/>
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <mesh filename="package://kiwi_drive/meshes/omniwheelcastororigin_scaled.stl"/>
+                </geometry>
+                <surface>
+                    <friction>
+                    <ode>
+                        <mu>1.0</mu>
+                        <mu2>1.0</mu2>
+                        <slip1>0.0</slip1>
+                        <slip2>0.0</slip2>
+                    </ode>
+                    </friction>
+                    <contact>
+                    <ode>
+                        <min_depth>0.01</min_depth>
+                    </ode>
+                    </contact>
+                </surface>
+            </collision>
+            <inertial>
+                <mass value="${castor_mass}"/>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <!-- <inertia ixx="2.64365e-7"
+                         ixy="0.0" 
+                         ixz="7.582e-10" 
+                         iyy="5.01237e-7" 
+                         iyz="0.0" 
+                         izz="5.01237e-7"/> -->
+                <inertia ixx="0.000005"
+                         ixy="0.0" 
+                         ixz="0.0" 
+                         iyy="0.000005" 
+                         iyz="0.0" 
+                         izz="0.000005"/>
+            </inertial>
+        </link>
+        <joint name="${name}_joint" type="fixed">
+            <parent link="${parent_name}"/>
+            <child link="${name}_link"/>
+            <origin xyz="${x/1000} ${y/1000} ${z/1000}" rpy="${r} ${p} ${yaw}"/>
+            <axis xyz="1 0 0"/>
+            <dynamics friction="0.9"/>
+        </joint>
+
+        <gazebo reference="${name}_link">
+            <material>Gazebo/Black</material>
+        </gazebo>
+    </xacro:macro>
+
+
+    <xacro:macro name="wheel" params="name x y z r p yaw">
+        <link name="wheel_${name}_link">
+            <visual>
+                <geometry>
+                    <mesh filename="package://kiwi_drive/meshes/omniwheelorigin_scaled.stl"/>
+                </geometry>
+                <material name="LightGrey"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <mesh filename="package://kiwi_drive/meshes/omniwheelorigin_scaled.stl"/>
+                </geometry>
+                <surface>
+                    <friction>
+                    <ode>
+                        <mu>1.0</mu>
+                        <mu2>1.0</mu2>
+                        <slip1>0.0</slip1>
+                        <slip2>0.0</slip2>
+                    </ode>
+                    </friction>
+                    <contact>
+                    <ode>
+                        <min_depth>0.01</min_depth>
+                    </ode>
+                    </contact>
+                </surface>
+            </collision>
+            <inertial>
+                <mass value="${wheel_mass}"/>
+                <!-- <origin xyz="-4.0e-6 4.0e-6 14.742e-3" rpy="0.0 0.0 0.0"/> -->
+                <origin xyz="0.0 0.0 0.015" rpy="0.0 0.0 0.0"/>
+                <!-- <inertia ixx="5.0416081e-5" 
+                        ixy="-2.03e-9" 
+                        ixz="1.901e-9" 
+                        iyy="5.3535333e-5" 
+                        iyz="-4.704e-9" 
+                        izz="3.3823314e-5"/>    -->
+                <inertia ixx="3.893177779e-5"
+                         ixy="0.0" 
+                         ixz="0.0" 
+                         iyy="3.893177779e-5" 
+                         iyz="0.0" 
+                         izz="5.378022225e-5"/>
+            </inertial>
+        </link>
+
+        <joint name="wheel_${name}_joint" type="continuous">
+            <parent link="base_link"/>
+            <child link="wheel_${name}_link"/>
+            <!-- mm to meters convertion required/-->
+            <origin xyz="${x/1000} ${y/1000} ${z/1000}" rpy="${r} ${p} ${yaw}"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="1" velocity="100.0"/>
+            <dynamics damping="0.0" friction="0.6"/>
+            <!-- <joint_properties damping="0.0" friction="0.0"/> -->
+        </joint>
+
+        <gazebo reference="wheel_${name}_link">
+            <material>Gazebo/LightGrey</material>
+        </gazebo>
+
+        <transmission name="${name}_wheel_transmission" type="SimpleTransmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <actuator name="wheel_${name}_actuator">
+                <mechanicalReduction>1</mechanicalReduction>
+                <hardwareInterface>VelocityJointInterface</hardwareInterface>
+            </actuator>
+            <joint name="wheel_${name}_joint">
+                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            </joint>
+        </transmission>
+
+        <xacro:castor parent_name="wheel_${name}_link" name="${name}_castor_1" x="0.0" y="24.059" z="9.0" r="0.0" p="0.0" yaw="0.0"/>
+        <xacro:castor parent_name="wheel_${name}_link" name="${name}_castor_2" x="22.882" y="7.435" z="9.0" r="0.0" p="0.0" yaw="${(pi/180)*108*1}"/>
+        <xacro:castor parent_name="wheel_${name}_link" name="${name}_castor_3" x="14.142" y="-19.464" z="9.0" r="0.0" p="0.0" yaw="${(pi/180)*108*2}"/>
+        <xacro:castor parent_name="wheel_${name}_link" name="${name}_castor_4" x="-14.142" y="-19.464" z="9.0" r="0.0" p="0.0" yaw="${(pi/180)*108*3}"/>
+        <xacro:castor parent_name="wheel_${name}_link" name="${name}_castor_5" x="-22.882" y="7.435" z="9.0" r="0.0" p="0.0" yaw="${(pi/180)*108*4}"/>
+        <xacro:castor parent_name="wheel_${name}_link" name="${name}_castor_6" x="0.0" y="-24.059" z="21.0" r="0.0" p="0.0" yaw="0.0"/>
+        <xacro:castor parent_name="wheel_${name}_link" name="${name}_castor_7" x="-22.882" y="-7.435" z="21.0" r="0.0" p="0.0" yaw="${(pi/180)*108*1}"/>
+        <xacro:castor parent_name="wheel_${name}_link" name="${name}_castor_8" x="-14.142" y="19.464" z="21.0" r="0.0" p="0.0" yaw="${(pi/180)*108*2}"/>
+        <xacro:castor parent_name="wheel_${name}_link" name="${name}_castor_9" x="14.142" y="19.464" z="21.0" r="0.0" p="0.0" yaw="${(pi/180)*108*3}"/>
+        <xacro:castor parent_name="wheel_${name}_link" name="${name}_castor_10" x="22.882" y="-7.435" z="21.0" r="0.0" p="0.0" yaw="${(pi/180)*108*4}"/>
+    </xacro:macro>
+
+    <xacro:wheel name="back" x="0.33" y="102.067" z="14.667" r="${-pi/2}" p="0.0" yaw="0.0"/>
+    <xacro:wheel name="left" x="88.263" y="-50.237" z="14.667" r="${pi/2}" p="0.0" yaw="${pi/3}"/>
+    <xacro:wheel name="right" x="-87.603" y="-50.237" z="14.667" r="${pi/2}" p="0.0" yaw="${-pi/3}"/>
+
+
+    <link name="imu_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://kiwi_drive/meshes/imuorigin_scaled.stl"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://kiwi_drive/meshes/imuorigin_scaled.stl"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.001"/> just for simulation, the actual mass is slightly diffrent
+            <!-- <origin xyz="0.0 0.0 2.5e-3" rpy="0.0 0.0 0.0"/> -->
+            <origin xyz="0.0 6.5e-5 1.023e-3" rpy="0.0 0.0 0.0"/>
+                <inertia ixx="2.13412e-7"
+                         ixy="0.0" 
+                         ixz="0.0" 
+                         iyy="2.09261e-7" 
+                         iyz="-6.03e-10" 
+                         izz="4.18117e-7"/>
+        </inertial>
+    </link>
+
+    <joint name="imu_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="imu_link"/>
+        <origin xyz="0 0 0.005" rpy="0 0 0"/>
+    </joint>
+
+
+
+    <!-- Gazebo plugin for ROS Control -->
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/</robotNamespace>
+        </plugin>
+
+        <!-- <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
+            <alwaysOn>true</alwaysOn>
+            <bodyName>imu_link</bodyName>
+            <topicName>imu</topicName>
+            <gaussianNoise>0.0</gaussianNoise>
+            <updateRate>50.0</updateRate>
+        </plugin> -->
+        <plugin name="WheelSlipPlugin" filename="libWheelSlipPlugin.so">
+            <wheel link_name="wheel_back_link">
+                <slip_compliance_lateral>0.0</slip_compliance_lateral>
+                <slip_compliance_longitudinal>0.1</slip_compliance_longitudinal>
+                <wheel_normal_force>100</wheel_normal_force>
+                <wheel_radius>0.014667</wheel_radius>
+            </wheel>
+            <wheel link_name="wheel_left_link">
+                <slip_compliance_lateral>0.0</slip_compliance_lateral>
+                <slip_compliance_longitudinal>0.1</slip_compliance_longitudinal>
+                <wheel_normal_force>100</wheel_normal_force>
+                <wheel_radius>0.014667</wheel_radius>
+            </wheel>
+            <wheel link_name="wheel_right_link">
+                <slip_compliance_lateral>0.0</slip_compliance_lateral>
+                <slip_compliance_longitudinal>0.1</slip_compliance_longitudinal>
+                <wheel_normal_force>100</wheel_normal_force>
+                <wheel_radius>0.014667</wheel_radius>
+            </wheel>
+        </plugin>
+
+    </gazebo>
+
+    <gazebo reference="base_link">
+        <material>Gazebo/Red</material>
+    </gazebo>
+
+
+</robot>

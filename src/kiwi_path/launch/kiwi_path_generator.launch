@@ -1,0 +1,10 @@
+<launch>
+    <node pkg="kiwi_path" type="kiwi_path_generator_node" name="kiwi_path_generator_node" output="screen">
+        <param name="x_radius" type="double" value="1.0"/>
+        <param name="y_radius" type="double" value="1.0"/>
+        <param name="kx" type="double" value="1.0"/>
+        <param name="ky" type="double" value="1.0"/>
+        <param name="x_func" type="string" value="sin"/>
+        <param name="y_func" type="string" value="cos"/>
+    </node>
+</launch>

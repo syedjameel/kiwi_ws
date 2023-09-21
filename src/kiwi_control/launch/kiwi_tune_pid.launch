@@ -1,0 +1,5 @@
+<launch>
+    <!--do it later-->
+    <node pkg="kiwi_control" type="kiwi_move2pose_node" name="kiwi_move2pose_node" output="screen">
+    </node>
+</launch>

@@ -1,0 +1,33 @@
+!!python/object/new:dynamic_reconfigure.encoding.Config
+dictitems:
+  Kd_w: 1.5
+  Kd_x: 9.5
+  Kd_y: 9.5
+  Ki_w: 0.5
+  Ki_x: 0.5
+  Ki_y: 0.5
+  Kp_w: 62.0
+  Kp_x: 72.0
+  Kp_y: 72.0
+  groups: !!python/object/new:dynamic_reconfigure.encoding.Config
+    dictitems:
+      Kd_w: 1.5
+      Kd_x: 9.5
+      Kd_y: 9.5
+      Ki_w: 0.5
+      Ki_x: 0.5
+      Ki_y: 0.5
+      Kp_w: 62.0
+      Kp_x: 72.0
+      Kp_y: 72.0
+      groups: !!python/object/new:dynamic_reconfigure.encoding.Config
+        state: []
+      id: 0
+      name: Default
+      parameters: !!python/object/new:dynamic_reconfigure.encoding.Config
+        state: []
+      parent: 0
+      state: true
+      type: ''
+    state: []
+state: []

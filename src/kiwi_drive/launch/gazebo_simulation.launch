@@ -1,0 +1,46 @@
+<launch>
+    <!-- <arg name="model" default="$(find kiwi_drive)/urdf/rover.urdf.xacro"/> -->
+    <param name="robot_description" command="$(find xacro)/xacro $(find kiwi_drive)/urdf/kiwi.urdf.xacro"/>
+    <arg name="rviz_config_file" default="$(find kiwi_drive)/config/config.rviz"/>
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/>
+    <!-- <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen"/> -->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_config_file)"/>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" default="$(find kiwi_drive)/worlds/simple_arena.world"/>
+        <arg name="paused" default="false"/>
+        <arg name="use_sim_time" default="true"/>
+        <arg name="gui" default="true"/>
+        <arg name="headless" default="false"/>
+        <arg name="debug" default="false"/>
+    </include>
+    <node pkg="gazebo_ros" type="spawn_model" name="spwaning_urdf" args="-urdf -model kiwi -param robot_description -x 0 -y 0 -z 1 -Y 0" output="screen"/>
+    
+    <!-- Load joint controller configurations from YAML file to parameter server -->
+    <rosparam file="$(find kiwi_drive)/config/kiwi_control.yaml" command="load"/>
+
+    <!-- load the controllers -->
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller motor_b_controller motor_l_controller motor_r_controller"/>
+    
+        <arg name="robot_namespace" default="robot1"/>
+
+    <!-- Radius param; later shift it to a config file -->
+	<param name="parameter/wheel/radius" value="0.014667"/>
+
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 1 map odom" /> -->
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_base_footprint" args=" 0 0 0 0 0 -0.707 0.707 odom odom" /> -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_base_footprint" args="0 0 0 0 0 1.5708 odom base_footprint" />
+    <node name="odometry" pkg="kiwi_drive" type="kiwi_drive_odometry_node" output="screen" args="pose_cheat"></node>
+	<node name="kinematics" pkg="kiwi_drive" type="kiwi_drive_kinematics_node" output="screen"></node>
+	<!-- <node name="encoder" pkg="kiwi_drive" type="kiwi_drive_encoder_node" output="screen"></node> -->
+
+    <node name="kiwi_drive_controller_node" pkg="kiwi_drive" type="kiwi_drive_controller_node">
+        <param name="robot_namespace" type="string" value="$(arg robot_namespace)" />
+    </node>
+
+    <!-- gazebo IMU and Odom fusion using ekf -->
+    <!-- <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true">
+       <rosparam command="load" file="$(find kiwi_drive)/config/ekf.yaml" />
+    </node> -->
+
+</launch>
