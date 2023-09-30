@@ -18,4 +18,4 @@ jobs:
         ros-version: 'noetic'
     - name: Build ROS workspace
       run: |
-        catkin_make
+        catkin build
