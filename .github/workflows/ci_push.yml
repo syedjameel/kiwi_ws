@@ -35,7 +35,6 @@ jobs:
     - name: Install other dependencies
       run: |
         sudo apt-get install ros-noetic-gazebo-ros-pkgs
-        sudo apt-get install ros-noetic-rviz ros-noetic-controller-manager ros-noetic-gazebo-ros ros-noetic-robot-state-publisher ros-noetic-joint-state-publisher-gui
 
     - name: build and test ROS 1
       uses: ros-tooling/action-ros-ci@v0.2
