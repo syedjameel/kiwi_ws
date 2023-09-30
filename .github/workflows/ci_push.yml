@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       CI: false
+      ROS_DISTRO: noetic
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -21,7 +22,7 @@ jobs:
     - name: Setup Ros env
       uses: ros-tooling/setup-ros@0.7.0
       with:
-        required-ros-distributions: noetic
+        required-ros-distributions: ${{ env.ROS_DISTRO }}
 
     - name: Install ROS dependencies
       run: |
@@ -33,4 +34,4 @@ jobs:
       uses: ros-tooling/action-ros-ci@v0.2
       with:
         package-name: kiwi_drive kiwi_control kiwi_path kiwi_teleop teleop_keyboard_omni3
-        target-ros1-distro: noetic
+        target-ros1-distro: ${{ env.ROS_DISTRO }}
