@@ -61,6 +61,12 @@
   <build_depend>tf2</build_depend>
   <build_depend>tf2_ros</build_depend>
   <build_depend>kdl_parser</build_depend>
+  <build_depend>rviz</build_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>controller_manager</build_depend>
+  <build_depend>robot_state_publisher</build_depend>
+  <build_depend>joint_state_publisher_gui</build_depend>
+
   <build_export_depend>geometry_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>roslaunch</build_export_depend>
@@ -83,6 +89,12 @@
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>message_runtime</exec_depend>
   <exec_depend>kdl_parser</exec_depend>
+  <exec_depend>rviz</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
+
 
 
 
