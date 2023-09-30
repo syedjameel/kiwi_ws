@@ -23,8 +23,10 @@ jobs:
       with:
         required-ros-distributions: noetic
 
-    - name: Install other packages
-      run: sudo apt-get install ros-noetic-gazebo-ros-pkgs
+    - name: Install ROS dependencies
+      run: |
+        sudo apt-get update
+        rosdep install --from-paths src --ignore-src -r -y
 
     - name: build and test ROS 1
       uses: ros-tooling/action-ros-ci@v0.2
