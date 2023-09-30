@@ -15,7 +15,9 @@ jobs:
     - name: Setup Ros env
       uses: ros-tooling/setup-ros@0.7.0
       with:
-        ros-version: 'noetic'
-    - name: Build ROS workspace
-      run: |
-        catkin build
+        required-ros-distributions: noetic
+    - name: build and test ROS 1
+      uses: ros-tooling/action-ros-ci@v0.2
+      with:
+        package-name: kiwi_drive kiwi_control kiwi_path kiwi_teleop teleop_keyboard_omni3
+        target-ros1-distro: noetic
