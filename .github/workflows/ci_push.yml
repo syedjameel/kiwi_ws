@@ -12,6 +12,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Setup SSH agent
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
     - name: Setup Ros env
       uses: ros-tooling/setup-ros@0.7.0
       with:
