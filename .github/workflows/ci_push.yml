@@ -1,0 +1,24 @@
+name: build packages CI
+
+on:
+    push:
+        branches: ['master']
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Ros
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ros-noetic-desktop-full
+        echo "source /opt/ros/noetic/setup.bash" >> $GITHUB_ENV
+        catkin build
+    - name: Build ROS workspace
+      run: |
+        source /opt/ros/noetic/setup.bash
+        catkin_make
