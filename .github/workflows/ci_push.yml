@@ -26,6 +26,7 @@ jobs:
     - name: Install ROS dependencies
       run: |
         sudo apt-get update
+        rosdep update
         rosdep install --from-paths src --ignore-src -r -y
 
     - name: build and test ROS 1
